@@ -101,7 +101,7 @@ def gen(model, tokenizer, input) :
 
         gened = model.generate(
             **inputs,
-            max_new_tokens = 1024,
+            max_new_tokens = 512,
             early_stopping=True,
             temperature = 0.7,
             top_k = 50,
