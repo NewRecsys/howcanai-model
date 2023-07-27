@@ -90,25 +90,27 @@ def model_settings():
 ## 요약 생성
 
 def gen(model, tokenizer, input) :
-    
-    inputs = tokenizer(
-        f"### 명령어: \n글을 요약해라\n\n### 원본: \n{input}\n\n### 요약: \n",
-        return_tensors='pt',
-        return_token_type_ids=False
-    )
-    inputs = inputs.to('cuda')  # 입력 데이터를 CUDA로 이동
-
-    gened = model.generate(
-        **inputs,
-        max_new_tokens = 512,
-        early_stopping=True,
-        top_k = 50,
-        top_p = 0.95,
-        do_sample=True,
-        num_return_sequences = 3,
         
-        eos_token_id=2,
-    )
+    with torch.autocast("cuda") : 
+        inputs = tokenizer(
+            f"### 명령어: \n글을 요약해라\n\n### 원본: \n{input}\n\n### 요약: \n",
+            return_tensors='pt',
+            return_token_type_ids=False
+        )
+        inputs = inputs.to('cuda')  # 입력 데이터를 CUDA로 이동
+
+        gened = model.generate(
+            **inputs,
+            max_new_tokens = 1024,
+            early_stopping=True,
+            temperature = 0.7,
+            top_k = 50,
+            top_p = 0.95,
+            do_sample=True,
+            num_return_sequences = 1,
+            
+            eos_token_id=2,
+        )
     
 
     return tokenizer.decode(gened[0])
