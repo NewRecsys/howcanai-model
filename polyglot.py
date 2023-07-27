@@ -103,7 +103,7 @@ def gen(model, tokenizer, input) :
             **inputs,
             max_new_tokens = 512,
             early_stopping=True,
-            temperature = 0.7,
+            temperature = 0.6,
             top_k = 50,
             top_p = 0.95,
             do_sample=True,
